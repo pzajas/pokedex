@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   pressableText: {
     fontSize: 16,
-    color: 'white',
+    color: theme.colors.white,
     textAlign: 'center',
   },
 })

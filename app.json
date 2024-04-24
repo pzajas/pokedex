@@ -5,27 +5,27 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/images/splash/logotyp.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.0",     
+      "buildNumber": "1.0.0",
       "supportsTablet": true,
       "bundleIdentifier": "test",
       "infoPlist": {
-        "UIBackgroundModes": [
-          "audio"
-        ],
-        "UIStatusBarStyle": "light-content"
+        "UIBackgroundModes": ["audio"],
+        "UIStatusBarStyle": "light-content",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access camera.",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to access your microphone",
+        "NSCalendarsUsageDescription": "The app needs to access your calendar.",
+        "NSRemindersUsageDescription": "Allow $(PRODUCT_NAME) to access your reminders",
+        "NSCalendarsFullAccessUsageDescription": "The app needs to access your calendar.",
+        "NSRemindersFullAccessUsageDescription": "Allow $(PRODUCT_NAME) to access your reminders"
       }
     },
-    "android": {    
+    "android": {
       "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
@@ -35,9 +35,12 @@
         "android.permission.AUDIOFOCUS_REQUEST_DELAY",
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.SCHEDULE_EXACT_ALARM",
-        "android.permission.POST_NOTIFICATIONS"
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.CAMERA",
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR"
       ],
-      "package": "test",
+      "package": "com.nemeyeth.test",
       "config": {
         "usesCleartextTraffic": true
       }
@@ -69,7 +72,7 @@
         {
           "calendarPermission": "The app needs to access your calendar."
         }
-      ],     
+      ],
       "@react-native-firebase/app",
       "@react-native-firebase/perf",
       "@react-native-firebase/crashlytics",
@@ -84,6 +87,7 @@
     ],
     "extra": {
       "eas": {
+        "projectId": "ccfc53a9-00d8-43d7-86fd-d84aaec8653a"
       }
     }
   }

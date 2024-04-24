@@ -1,21 +1,18 @@
-import React from 'react'
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native'
-import { getCapitalizedString } from '../../utils/getters/getCapitalizedString'
-import { StatItem } from './PokemonProfileStatItem'
-import { IPokemon } from '../../types/types'
 import { useEffect, useState } from 'react'
-
+import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { PokemonTabStats } from './PokemonTabContent/PokemonTabStats'
+import { IPokemon } from '../../types/types'
+import { PokemonTabAbout } from './PokemonTabContent/PokemonTabAbout'
+import { PokemonEvolutionTab } from './PokemonTabContent/PokemonEvolutionTab'
 interface IStatsObject {
   [statName: string]: number
 }
-
 interface ITabContent {
   activeTab: string
   statsObject: IStatsObject
   adjustedBackgroundColor: string
   pokemon: IPokemon
 }
-
 interface IEvolutionData {
   name: string
   urlId: string
@@ -70,52 +67,47 @@ export const TabContent = ({ activeTab, statsObject, adjustedBackgroundColor, po
     void fetchEvolutionChain()
   }, [pokemon])
 
-  if (activeTab === 'Stats') {
-    return (
-      <>
-        <Text style={{ marginTop: 50, marginHorizontal: 16, fontSize: 16, fontWeight: '500' }}>Base Stats</Text>
+  return (
+    <>
+      {activeTab === 'Stats' && (
+        <>
+          <Text style={styles.sectionTitle}>Base Stats</Text>
+          <FlatList
+            style={styles.flatListContainer}
+            data={Object.entries(statsObject)}
+            keyExtractor={(item) => item[0]}
+            renderItem={({ item }) => (
+              <PokemonTabStats statName={item[0]} baseStat={item[1]} backgroundColor={adjustedBackgroundColor} />
+            )}
+            contentContainerStyle={styles.contentContainer}
+          />
+        </>
+      )}
+      {activeTab === 'About' && <PokemonTabAbout pokemon={pokemon} />}
+      {activeTab === 'Evolutions' && (
         <FlatList
-          style={styles.flatListContainer}
-          data={Object.entries(statsObject)}
-          keyExtractor={(item) => item[0]}
-          renderItem={({ item }) => (
-            <StatItem statName={item[0]} baseStat={item[1]} backgroundColor={adjustedBackgroundColor} />
-          )}
-          contentContainerStyle={styles.contentContainer}
+          style={styles.evolutionContainer}
+          data={evolutionChain}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item, index }) => {
+            if (index % 2 === 0) {
+              const nextItem = evolutionChain[index + 1]
+              return (
+                <View style={styles.evolutionRow}>
+                  <PokemonEvolutionTab id={item.urlId.toString().padStart(3, '0')} name={item.name} />
+                  {nextItem && (
+                    <PokemonEvolutionTab id={nextItem.urlId.toString().padStart(3, '0')} name={nextItem.name} />
+                  )}
+                </View>
+              )
+            } else {
+              return null
+            }
+          }}
         />
-      </>
-    )
-  } else if (activeTab === 'About') {
-    return (
-      <View style={styles.centeredContent}>
-        <Text style={{ marginHorizontal: 16 }}>
-          This is {getCapitalizedString(pokemon)}. A very nasty individual. Despite that we all love pokemons. Our
-          little pocket monsters!
-        </Text>
-      </View>
-    )
-  } else if (activeTab === 'Evolutions') {
-    return (
-      <View style={styles.evolutionContainer}>
-        {evolutionChain.map((evo, index) => {
-          const id: string = evo?.urlId?.toString().padStart(3, '0')
-          return (
-            <View key={evo.name} style={styles.evolutionItem}>
-              <Image
-                style={styles.pokemonImage}
-                source={{
-                  uri: `https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/${id}.png`,
-                }}
-              />
-              <Text>#{id}</Text>
-              <Text style={styles.pokemonName}>{evo.name}</Text>
-              {(index + 1) % 2 === 0 && <View style={styles.rowSeparator} />}
-            </View>
-          )
-        })}
-      </View>
-    )
-  }
+      )}
+    </>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -130,10 +122,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 16,
   },
+  sectionTitle: {
+    marginTop: 50,
+    marginHorizontal: 16,
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  aboutText: {
+    marginHorizontal: 16,
+  },
   evolutionContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
     marginTop: 32,
   },
   evolutionItem: {
@@ -156,5 +154,10 @@ const styles = StyleSheet.create({
   pokemonName: {
     textTransform: 'capitalize',
     fontWeight: 'bold',
+  },
+  evolutionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
   },
 })

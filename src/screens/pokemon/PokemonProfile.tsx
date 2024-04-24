@@ -9,6 +9,7 @@ import { TabContent } from './PokemonProifileTabContent'
 import { TabContainer } from './PokemonProfileTabContainer'
 import { getAdjustedColor } from '../../utils/getters/getAdjustedColor'
 import { IPokemon } from '../../types/types'
+import { basePokedexUrl } from '../../dictionary/urls'
 
 export const PokemonProfile = ({ route }: { route: Route<string, { pokemon: IPokemon }> }) => {
   const { pokemon } = route.params
@@ -16,8 +17,7 @@ export const PokemonProfile = ({ route }: { route: Route<string, { pokemon: IPok
   const [activeTab, setActiveTab] = useState('Stats')
   const backgroundColor = getBackgroundColoryBypokemonType(pokemon.types)
   const id: string = pokemon?.id?.toString().padStart(3, '0')
-  const baseUrl = 'https://www.pokemon.com/static-assets/content-assets/cms2/img/pokedex/full/'
-  const imageUrl = `${baseUrl}${id}.png`
+  const imageUrl = `${basePokedexUrl}${id}.png`
 
   useEffect(() => {
     setIsLoading(true)

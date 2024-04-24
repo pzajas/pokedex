@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { StyleSheet, FlatList, SafeAreaView, ActivityIndicator } from 'react-native'
 import { theme } from '../styles/theme'
-import { RenderItem } from './RenderItem'
+import { RenderPokemon } from './RenderPokemon'
 import { SearchInput } from './SearchInput'
 import { IPokemon } from '../types/types'
 
@@ -44,7 +44,7 @@ export const PokemonList = () => {
       ) : (
         <FlatList
           data={filterPokemon(pokemonData, searchQuery)}
-          renderItem={({ item }) => <RenderItem item={item} navigation={navigation} />}
+          renderItem={({ item }) => <RenderPokemon item={item} navigation={navigation} />}
           keyExtractor={(item) => item.id.toString()}
         />
       )}

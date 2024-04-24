@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { UpperMenu } from '../components/menus/UpperMenu'
 import { LoginScreen } from '../screens/auth/LoginScreen'
 import { WelcomeScreen } from '../screens/welcome/WelcomeScreen'
 import { RegisterScreen } from '../screens/auth/RegisterScreen'
@@ -19,7 +18,6 @@ export const UserNotLoggedInNavigation = () => {
         },
         drawerPosition: 'right',
         drawerType: 'front',
-        header: () => <UpperMenu />,
       }}
     >
       <Drawer.Screen name="WelcomeScreen" component={WelcomeScreen} options={{ headerShown: false }} />
